@@ -177,11 +177,11 @@ class NYCTFeed:
 
         If more than one filter is specified, only trips that match all filters will be returned.
 
-        :param line_id: A line identifier such as "1", "A", "GS", or "FS"
+        :param line_id: A line identifier str (or list of strs)  such as "1", "A", "GS", or "FS"
         :param travel_direction: A travel direction str, either "N" for North or "S" for South (see `Trip.direction`)
         :param train_assigned: A boolean that is True iff a train has been assigned to this trip
         :param underway: A boolean that is True iff a train has begun this trip
-        :param shape_id: A string representing the shape identifier for a trip (i.e. "1..S03R") (see `Trip.shape_id`)
+        :param shape_id: A str (or list of strs) representing the shape id (i.e. "1..S03R") (see `Trip.shape_id`)
         :param headed_for_stop_id: A str (or list of strs) representing a stop id(s) that this trip must be heading to
         :param updated_after: A datetime.datetime, trips whose most recent update is before this time are excluded
                               (note, specifying this option always excludes trains not underway - since only trains
@@ -193,8 +193,14 @@ class NYCTFeed:
         for trip in self.trips:
             # Filter based on method parameters
             if line_id is not None:
-                if trip.route_id != line_id:
-                    continue
+                if isinstance(line_id, str):
+                    if trip.route_id != line_id:
+                        continue
+                elif isinstance(line_id, list):
+                    if trip.route_id not in line_id:
+                        continue
+                else:
+                    raise ValueError(f"Valid value for line_id: {line_id}. Must be str or list")
 
             if travel_direction is not None:
                 if trip.direction != travel_direction:
@@ -209,8 +215,14 @@ class NYCTFeed:
                     continue
 
             if shape_id is not None:
-                if trip.shape_id != shape_id:
-                    continue
+                if isinstance(shape_id, str):
+                    if trip.shape_id != shape_id:
+                        continue
+                elif isinstance(shape_id, list):
+                    if trip.shape_id not in shape_id:
+                        continue
+                else:
+                    raise ValueError(f"Valid value for shape_id: {shape_id}. Must be str or list")
 
             if headed_for_stop_id is not None:
                 if isinstance(headed_for_stop_id, str):
