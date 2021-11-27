@@ -232,10 +232,10 @@ class NYCTFeed:
         return trips
 
     def __repr__(self):
-        return f"{{NYCT_GTFS_Realtime_Feed, @{self.last_generated.strftime('%Y-%M-%d %H:%M:%S')}, {str(self.trips)}}}"
+        return f"{{NYCT_GTFS_Realtime_Feed, @{self.last_generated.strftime('%Y-%m-%d %H:%M:%S')}, {str(self.trips)}}}"
 
     def __str__(self):
         path = unquote(urlparse(self._feed_url).path)
         feed_id = path.split('/')[-1]
-        return f"NYCT Subway Feed ({feed_id}), generated {self.last_generated.strftime('%Y-%M-%d %H:%M:%S')}, " \
+        return f"NYCT Subway Feed ({feed_id}), generated {self.last_generated.strftime('%Y-%m-%d %H:%M:%S')}, " \
                f"containing {len(self.trips)} trips"
