@@ -145,18 +145,20 @@ class NYCTFeed:
                 vehicle_updates[self._trip_identifier(entity.vehicle.trip)] = entity.vehicle
             elif entity.HasField('alert'):
                 for informed_entity in entity.alert.informed_entity:
-                    if self._trip_identifier(informed_entity.trip) not in alerts:
-                        alerts[self._trip_identifier(informed_entity.trip)] = []
-                    alerts[self._trip_identifier(informed_entity.trip)].append(entity.alert)
+                    train_id = informed_entity.trip.Extensions[nyct_subway_pb2.nyct_trip_descriptor].train_id
+                    if train_id not in alerts:
+                        alerts[train_id] = []
+                    alerts[train_id].append(entity.alert)
 
         trips = []
         for trip_id, trip_update in trip_updates.items():
+            train_id = trip_update.trip.Extensions[nyct_subway_pb2.nyct_trip_descriptor].train_id
             vehicle_update = None
             applicable_alerts = None
             if trip_id in vehicle_updates:
                 vehicle_update = vehicle_updates[trip_id]
-            if trip_id in alerts:
-                applicable_alerts = alerts[trip_id]
+            if train_id in alerts:
+                applicable_alerts = alerts[train_id]
 
             trip = Trip(
                 trip_update,
