@@ -1,17 +1,5 @@
-<div id="top"></div>
-
-<br />
-<div>
-  <a href="https://github.com/Andrew-Dickinson/nyct-gtfs">
-    <img src="img/img.png" alt="Train Icons" width="400">
-  </a>
-  <br/>
-  <br/>
-</div>
-
 
 # NYCT-GTFS - Real-time NYC subway data parsing for humans
-<!-- PROJECT SHIELDS -->
 [![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
@@ -63,7 +51,6 @@ This section should list any major frameworks/libraries used to bootstrap your p
 * [Protocol Buffers](https://developers.google.com/protocol-buffers/)
 * [MTA GTFS-realtime Data Feeds](https://api.mta.info/)
 
-<!-- GETTING STARTED -->
 ## Installation
 
 1. Get a free MTA API Key at [https://api.mta.info/](https://api.mta.info/#/signup)
@@ -78,10 +65,7 @@ This section should list any major frameworks/libraries used to bootstrap your p
     # Load the realtime feed from the MTA site
     feed = NYCTFeed("1", api_key="YOUR_MTA_API_KEY_GOES_HERE")
     ```
-    
-    
-    
-<!-- CONTRIBUTING -->
+
 ## Contributing
 
 Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
@@ -95,24 +79,16 @@ Don't forget to give the project a star! Thanks again!
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-
-
-
-<!-- LICENSE -->
 ## License
 
 Distributed under the MIT License. See `LICENSE.txt` for more information.
 
-
-<!-- CONTACT -->
 ## Contact
 
 Andrew Dickinson - andrew.dickinson.0216@gmail.com
 
 Project Link: [https://github.com/Andrew-Dickinson/nyct-gtfs](https://github.com/Andrew-Dickinson/nyct-gtfs)
 
-
-<!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
 
 * [Choose an Open Source License](https://choosealicense.com)
@@ -125,12 +101,7 @@ All names and marks are the registered trademarks of their original owners. The 
 for identification and reference purposes only and does not imply any association with the trademark holder or their 
 brand.
 
-<p align="right">(<a href="#top">back to top</a>)</p>
 
-
-
-<!-- MARKDOWN LINKS & IMAGES -->
-<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 [contributors-shield]: https://img.shields.io/github/contributors/Andrew-Dickinson/nyct-gtfs.svg?style=for-the-badge
 [contributors-url]: https://github.com/Andrew-Dickinson/nyct-gtfs/graphs/contributors
 [forks-shield]: https://img.shields.io/github/forks/Andrew-Dickinson/nyct-gtfs.svg?style=for-the-badge
