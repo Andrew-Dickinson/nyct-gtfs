@@ -21,12 +21,12 @@ setup(
     classifiers=[
         "License :: OSI Approved :: MIT License",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.7",
+        "Operating System :: OS Independent"
     ],
-    packages=["nyct_gtfs"],
+    packages=["nyct_gtfs", "nyct_gtfs.compiled_gtfs"],
     include_package_data=True,
     package_data={
-        "nyct_gtfs": "gtfs_static/*.txt"
+        "nyct_gtfs": ["gtfs_static/*.txt"]
     },
     install_requires=["requests", "protobuf"]
 )
