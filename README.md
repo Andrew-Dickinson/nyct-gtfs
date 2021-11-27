@@ -7,20 +7,17 @@
 [![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
 
-
-<!-- PROJECT LOGO -->
 <br />
-<div align="center">
+<div>
   <a href="https://github.com/Andrew-Dickinson/nyct-gtfs">
     <img src="img/img.png" alt="Train Icons" width="400">
   </a>
-
-  <h3 align="center">NYCT-GTFS</h3>
-
-  <p align="center">
-    Real-time NYC subway data parsing for humans
+  <br/>
+  <br/>
 </div>
 
+
+# NYCT-GTFS - Real-time NYC subway data parsing for humans
 
 This python library provides a human-friendly, native python interface
 for dealing with the [NYCT Subway data published by the MTA](https://api.mta.info/). By default,
@@ -82,20 +79,9 @@ This section should list any major frameworks/libraries used to bootstrap your p
     # Load the realtime feed from the MTA site
     feed = NYCTFeed("1", api_key="YOUR_MTA_API_KEY_GOES_HERE")
     ```
-
-
-
-<!-- USAGE EXAMPLES -->
-## Usage
-
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
-
-_For more examples, please refer to the [Documentation](https://example.com)_
-
-
-
-
-
+    
+    
+    
 <!-- CONTRIBUTING -->
 ## Contributing
 
