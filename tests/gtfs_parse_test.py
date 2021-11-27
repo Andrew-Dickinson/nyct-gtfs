@@ -5,8 +5,8 @@ from nyct_gtfs import NYCTFeed
 
 
 def main():
-    feed = NYCTFeed("SIR", api_key=os.environ['API_KEY'])
-    trips = feed.filter_trips(line_id="5")
+    feed = NYCTFeed("2", api_key=os.environ['API_KEY'])
+    trips = feed.filter_trips(line_id=["2", "3"], travel_direction="N")
     print(trips[3])
 
 
