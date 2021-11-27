@@ -45,8 +45,6 @@ See `trip.py` and `stop_time_update.py` for more information about the fields av
 
 ### Built With
 
-This section should list any major frameworks/libraries used to bootstrap your project. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
-
 * [Requests](https://docs.python-requests.org/)
 * [Protocol Buffers](https://developers.google.com/protocol-buffers/)
 * [MTA GTFS-realtime Data Feeds](https://api.mta.info/)
