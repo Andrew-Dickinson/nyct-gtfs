@@ -1,12 +1,5 @@
 <div id="top"></div>
 
-<!-- PROJECT SHIELDS -->
-[![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
-[![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
-[![MIT License][license-shield]][license-url]
-
 <br />
 <div>
   <a href="https://github.com/Andrew-Dickinson/nyct-gtfs">
@@ -18,6 +11,12 @@
 
 
 # NYCT-GTFS - Real-time NYC subway data parsing for humans
+<!-- PROJECT SHIELDS -->
+[![Contributors][contributors-shield]][contributors-url]
+[![Forks][forks-shield]][forks-url]
+[![Stargazers][stars-shield]][stars-url]
+[![Issues][issues-shield]][issues-url]
+[![MIT License][license-shield]][license-url]
 
 This python library provides a human-friendly, native python interface
 for dealing with the [NYCT Subway data published by the MTA](https://api.mta.info/). By default,
