@@ -124,10 +124,10 @@ class StopTimeUpdate:
             of the remaining trip.
         ```
         """
-        if not self._stop_time_update.Extensions[nyct_subway_pb2.nyct_stop_time_update].HasField('scheduled_track'):
+        if not self._stop_time_update.Extensions[nyct_subway_pb2.nyct_stop_time_update].HasField('actual_track'):
             return None
 
-        return self._stop_time_update.Extensions[nyct_subway_pb2.nyct_stop_time_update].scheduled_track
+        return self._stop_time_update.Extensions[nyct_subway_pb2.nyct_stop_time_update].actual_track
 
     @property
     def unexpected_track_arrival(self):
