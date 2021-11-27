@@ -303,7 +303,7 @@ class Trip:
         try:
             return self._trip_shapes.get_headsign_text(self.shape_id)
         except ValueError:
-            if self.stop_time_updates[-1].stop_name is not None:
+            if len(self.stop_time_updates) > 0 and self.stop_time_updates[-1].stop_name is not None:
                 return self.stop_time_updates[-1].stop_name
             return None
 
