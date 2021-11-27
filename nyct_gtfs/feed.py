@@ -118,6 +118,11 @@ class NYCTFeed:
     def refresh(self):
         """Reload this object's feed information from the MTA API"""
         response = requests.get(self._feed_url, headers={'x-api-key': self._api_key})
+        if response.status_code == 403:
+            raise RuntimeError(f"Invalid API key: {self._api_key}")
+        elif response.status_code != 200:
+            raise RuntimeError(f"Error accessing MTA data feed: {response.content}")
+
         self.load_gtfs_bytes(response.content)
 
     def load_gtfs_bytes(self, gtfs_bytes):
