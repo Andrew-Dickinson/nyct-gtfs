@@ -197,10 +197,10 @@ class StopTimeUpdate:
         string = f"{stop_name}: "
 
         if self.arrival:
-            string += f"Projected Arrival in {int((self.arrival - datetime.datetime.now()).total_seconds())}s. "
+            string += f"Projected Arrival {self.arrival.strftime('%H:%M:%S')}. "
 
         if self.departure:
-            string += f"Projected Departure in {int((self.departure - datetime.datetime.now()).total_seconds())}s. "
+            string += f"Projected Departure {self.arrival.strftime('%H:%M:%S')}. "
 
         if self.scheduled_track:
             string += f"Scheduled to arrive on track {self.scheduled_track}. "
