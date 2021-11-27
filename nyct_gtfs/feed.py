@@ -171,7 +171,7 @@ class NYCTFeed:
         return trips
 
     def filter_trips(self, line_id=None, travel_direction=None, train_assigned=None, underway=None, shape_id=None,
-                  headed_for_stop_id=None, updated_after=None):
+                  headed_for_stop_id=None, updated_after=None, has_delay_alert=None):
         """
         Get the list of subway trips from the GTFS-realtime feed, optionally filtering based on one or more parameters.
 
@@ -186,6 +186,7 @@ class NYCTFeed:
         :param updated_after: A datetime.datetime, trips whose most recent update is before this time are excluded
                               (note, specifying this option always excludes trains not underway - since only trains
                               that are underway provide position updates)
+        :param has_delay_alert: A boolean that is True iff a train currently has a delay alert published
         :return: A list of `Trip` objects
         """
         trips = []
@@ -225,6 +226,10 @@ class NYCTFeed:
                 if not trip.underway:
                     continue
                 if trip.last_position_update < updated_after:
+                    continue
+
+            if has_delay_alert is not None:
+                if trip.has_delay_alert != has_delay_alert:
                     continue
 
             trips.append(trip)
