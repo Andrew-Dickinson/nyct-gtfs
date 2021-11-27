@@ -39,6 +39,12 @@ datetime.datetime(2021, 11, 26, 22, 34, 51)
 # And what time will it get there?
 >>> trains[0].stop_time_updates[1].arrival
 datetime.datetime(2021, 11, 26, 22, 36, 21)
+
+# To pull new data, use the refresh() method
+>>> feed.refresh()
+
+# You must also update the trains list, existing objects are not modified by refresh()
+>>> trains = feed.filter_trips(line_id=["1", "2", "3"], headed_for_stop_id=["127N", "127S"], underway=True)
 ```
 
 See `trip.py` and `stop_time_update.py` for more information about the fields available
