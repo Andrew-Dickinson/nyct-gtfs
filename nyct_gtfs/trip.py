@@ -3,7 +3,6 @@ import datetime
 from nyct_gtfs.stop_time_update import StopTimeUpdate
 from nyct_gtfs.compiled_gtfs import nyct_subway_pb2, gtfs_realtime_pb2
 from nyct_gtfs.gtfs_static_types import TripShapes, Stations
-from nyct_gtfs.time_utilities import parse_timestamp
 
 
 class Trip:
@@ -160,10 +159,6 @@ class Trip:
         This is important when determining a stalled train condition. This field is only available after the train gets
         underway. If this field is accessed before `Train.underway` is True, None is returned
 
-        NOTE: THIS FIELD IS BEING MODIFIED FROM ITS RAW FORMAT DUE TO IRREGULARITIES IN THE GTFS FEED. SEE
-        `time_utilites.parse_timestamp()` FOR MORE INFORMATION. FOR THE UNADUTLERATED TIMESTAMP,
-        USE `Trip.last_position_update_raw`.
-
         From the NYCT GTFS-realtime spec:
         ```
             The motivation to include VehiclePosition is to provide the timestamp field. This is the time of the last
@@ -182,37 +177,7 @@ class Trip:
         if not self.underway:
             return None
 
-        return parse_timestamp(self._vehicle_update.timestamp, self._feed_datetime)
-
-    @property
-    def last_position_update_raw(self):
-        """
-        A datetime.datetime object (or None) which represents the last time that this train gave a position update.
-        This is important when determining a stalled train condition. This field is only available after the train gets
-        underway. If this field is accessed before `Train.underway` is True, None is returned
-
-        NOTE: THIS FIELD MAY BE ERRONEOUSLY OFFSET INTO THE FUTURE BY ONE HOUR. SEE `time_utilites.parse_timestamp()`
-        FOR MORE INFORMATION. FOR THE CORRECTED TIMESTAMP, USE `Trip.last_position_update_raw`.
-
-        From the NYCT GTFS-realtime spec:
-        ```
-            The motivation to include VehiclePosition is to provide the timestamp field. This is the time of the last
-            detected movement of the train. This allows feed consumers to detect the situation when a train stops
-            moving (aka stalled). The platform countdown clocks only count down when trains are moving
-            otherwise they persist the last published arrival time for that train. If one wants to mimic this
-            behavioryou must first determine the absence of movement (stalled train condition) ), then the
-            countdown must be stopped.
-
-            As an example, a countdown could be stopped for a trip when the difference between the timestamp in
-            the VehiclePosition and the timestamp in the field header is greater than, 90 seconds.
-            Note: since VehiclePosition information is not provided until the train starts moving, it is recommended
-            that feed consumers use the origin terminal departure to determine a train stalled condition.
-        ```
-        """
-        if not self.underway:
-            return None
-
-        return parse_timestamp(self._vehicle_update.timestamp)
+        return datetime.datetime.fromtimestamp(self._vehicle_update.timestamp)
 
     @property
     def location(self):
