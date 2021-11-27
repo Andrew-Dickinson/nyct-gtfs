@@ -308,6 +308,11 @@ class Trip:
         Check if this trip has a published delay alert. Per the NYCT GTFS-realtime spec, all alerts in this feed are
         for train delays, so this field simply reflects the binary presence of one or more alerts corresponding
         to this trip in the GTFS-realtime feed.
+
+        NOTE: that this not a necessary condition for a delayed train. That is, it is possible for a train to
+        be delayed (particularly in the B division), without this function returning true.
+
+        From the NYCT GTFS-realtime spec:
         ```
             The only alerts included in the NYCT Subway GTFS-realtime feed are notifications about delayed trains
             therefore the entity is always a trip. In general, when a train is shown as ‘delayed’ on the station
