@@ -256,7 +256,9 @@ class Trip:
     @property
     def current_stop_sequence_index(self):
         """
-        An integer indicating the index of the stop represented by `Trip.location` along the route of the train
+        An integer indicating the index of the stop represented by `Trip.location` along the route of the train. This
+        field is only available after the train gets underway. If this field is accessed before `Train.underway` is
+        `True, None is returned
 
         From the GTFS-realtime specification:
         ```
@@ -264,6 +266,9 @@ class Trip:
             refers to) is determined by current_status. If current_status is missing IN_TRANSIT_TO is assumed.
         ```
         """
+        if not self.underway:
+            return None
+
         return self._vehicle_update.current_stop_sequence
 
     @property
