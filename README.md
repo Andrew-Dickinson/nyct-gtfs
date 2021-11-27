@@ -79,20 +79,9 @@ This section should list any major frameworks/libraries used to bootstrap your p
     # Load the realtime feed from the MTA site
     feed = NYCTFeed("1", api_key="YOUR_MTA_API_KEY_GOES_HERE")
     ```
-
-
-
-<!-- USAGE EXAMPLES -->
-## Usage
-
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
-
-_For more examples, please refer to the [Documentation](https://example.com)_
-
-
-
-
-
+    
+    
+    
 <!-- CONTRIBUTING -->
 ## Contributing
 
