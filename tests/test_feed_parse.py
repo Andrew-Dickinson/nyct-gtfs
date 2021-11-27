@@ -29,7 +29,7 @@ class TestFeedParseADivision(unittest.TestCase):
         self.assertEqual(datetime.fromisoformat("2021-11-26T15:03:00"), trip.departure_time)
         self.assertEqual("N", trip.direction)
         self.assertEqual(False, trip.has_delay_alert)
-        self.assertEqual(None, trip.headsign_text)
+        self.assertEqual("Van Cortlandt Park-242 St", trip.headsign_text)
         self.assertEqual(datetime.fromisoformat("2021-11-26T15:56:17"), trip.last_position_update)
         self.assertEqual('107N', trip.location)
         self.assertEqual('IN_TRANSIT_TO', trip.location_status)
@@ -42,7 +42,7 @@ class TestFeedParseADivision(unittest.TestCase):
         self.assertEqual(True, trip.underway)
 
         self.assertEqual('{"090300_1..N", IN_TRANSIT_TO 107N @15:56:17}', repr(trip))
-        self.assertEqual('Northbound 1 (1..N), departed origin 15:03:00, Currently IN_TRANSIT_TO 215 St, '
+        self.assertEqual('Northbound 1 to Van Cortlandt Park-242 St, departed origin 15:03:00, Currently IN_TRANSIT_TO 215 St, '
                          'last update at 15:56:17', str(trip))
 
         self.assertEqual(False, trip.headed_to_stop('asdfljasd'))
@@ -269,6 +269,9 @@ class TestFeedParseBDivision(unittest.TestCase):
             len(self.feed.filter_trips(line_id="A", updated_after=self.feed.last_generated - timedelta(minutes=5)))
         )
 
+    def test_automatic_headsign_gen(self):
+        self.assertEqual('Inwood-207 St', self.feed.trips[0].headsign_text)
+        self.assertEqual('A..N', self.feed.trips[0].shape_id)
 
 class TestFeedParseDelayAlerts(unittest.TestCase):
     def setUp(self) -> None:

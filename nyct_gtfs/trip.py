@@ -294,12 +294,17 @@ class Trip:
         Finds the "headsign text" for this trip, which is usually the name of the terminal station,
         e.g. "Wakefield-241 St"
 
-        Returns a string representing the headsign text or None if trip shape information is unavailable or the trip
-        shape ID is unknown
+        If trip shape information is unavailable or the trip shape ID doesn't match anything in the static GTFS
+        schedule, this function attempts to identify this trip's terminal station by the real-time stop schedule,
+        and if available, returns the name of the terminal station
+
+        Returns a string representing the headsign text
         """
         try:
             return self._trip_shapes.get_headsign_text(self.shape_id)
         except ValueError:
+            if self.stop_time_updates[-1].stop_name is not None:
+                return self.stop_time_updates[-1].stop_name
             return None
 
     @property
