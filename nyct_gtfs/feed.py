@@ -202,7 +202,7 @@ class NYCTFeed:
                     if trip.route_id not in line_id:
                         continue
                 else:
-                    raise ValueError(f"Valid value for line_id: {line_id}. Must be str or list")
+                    raise TypeError(f"Valid value for line_id: {line_id}. Must be str or list")
 
             if travel_direction is not None:
                 if trip.direction != travel_direction:
@@ -224,7 +224,7 @@ class NYCTFeed:
                     if trip.shape_id not in shape_id:
                         continue
                 else:
-                    raise ValueError(f"Valid value for shape_id: {shape_id}. Must be str or list")
+                    raise TypeError(f"Valid value for shape_id: {shape_id}. Must be str or list")
 
             if headed_for_stop_id is not None:
                 if isinstance(headed_for_stop_id, str):
@@ -235,6 +235,8 @@ class NYCTFeed:
                     if sum(headed_for_stops) == 0:
                         # This means that none of the stops requested by the caller are in this train's future path
                         continue
+                else:
+                    raise TypeError(f"Valid value for headed_for_stop_id: {headed_for_stop_id}. Must be str or list")
 
             if updated_after is not None:
                 if not trip.underway:
