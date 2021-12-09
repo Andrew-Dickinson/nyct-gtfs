@@ -125,12 +125,17 @@ class NYCTFeed:
 
         self.load_gtfs_bytes(response.content)
 
-    def load_gtfs_bytes(self, gtfs_bytes):
+    def load_gtfs_bytes(self, gtfs_bytes, cpp_accelerated=False):
         """
         Load this object's feed information from a binary GTFS string, useful for testing or analyzing stored feed data
         """
-        feed = gtfs_realtime_pb2.FeedMessage()
-        feed.ParseFromString(gtfs_bytes)
+        if not cpp_accelerated:
+            feed = gtfs_realtime_pb2.FeedMessage()
+            feed.ParseFromString(gtfs_bytes)
+        else:
+            from nyct_gtfs import cpp_parser_wrapper
+            feed = cpp_parser_wrapper.FeedMessage(gtfs_bytes)
+
         self._feed = feed
 
     @staticmethod
