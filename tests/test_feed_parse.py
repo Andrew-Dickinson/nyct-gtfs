@@ -297,7 +297,7 @@ class TestFeedFiltering(unittest.TestCase):
             self.feed = NYCTFeed('1', api_key=None, fetch_immediately=False)
             self.feed.load_gtfs_bytes(f.read())
 
-    def test_feed_header(self):
+    def test_feed_filtering(self):
         self.assertEqual(36, len(self.feed.filter_trips(line_id="1")))
         self.assertRaises(TypeError, self.feed.filter_trips, line_id=1)
         self.assertEqual(17, len(self.feed.filter_trips(line_id="1", travel_direction="N")))
