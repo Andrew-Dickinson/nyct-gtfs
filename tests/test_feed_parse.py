@@ -7,8 +7,16 @@ from nyct_gtfs.compiled_gtfs import gtfs_realtime_pb2, nyct_subway_pb2
 
 class TestFeedParseADivision(unittest.TestCase):
     def setUp(self) -> None:
-        with open('test_data/a_division.nyct.gtfsrt', 'rb') as f:
+        # Load the wrong data
+        with open('test_data/b_division.nyct.gtfsrt', 'rb') as f:
             self.feed = NYCTFeed('1', api_key=None, fetch_immediately=False)
+            self.feed.load_gtfs_bytes(f.read())
+
+        # Force trips to load
+        str(self.feed.trips[3])
+
+        # Refresh with the correct data (therefore all tests below also check that old data isn't incorrectly cached)
+        with open('test_data/a_division.nyct.gtfsrt', 'rb') as f:
             self.feed.load_gtfs_bytes(f.read())
 
     def test_feed_header(self):
