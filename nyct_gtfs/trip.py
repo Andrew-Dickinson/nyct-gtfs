@@ -40,6 +40,8 @@ class Trip:
 
         self._applicable_alerts = applicable_alerts
 
+        self._stop_ids = set(stop.stop_id for stop in self.stop_time_updates)
+
     @property
     def underway(self):
         """
@@ -334,7 +336,7 @@ class Trip:
         :param stop_id The ID of the stop to check (e.g. "123S")
         :return True iff this trip is going to visit (or is present at) the provided stop id
         """
-        return stop_id in (stop.stop_id for stop in self.stop_time_updates)
+        return stop_id in self._stop_ids
 
     def __str__(self):
         string = ""

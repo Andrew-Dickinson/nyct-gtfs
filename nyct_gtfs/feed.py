@@ -63,6 +63,9 @@ class NYCTFeed:
         self._trip_shapes = TripShapes(trips_txt)
         self._stops = Stations(stops_txt)
 
+        # Cached copy of trips to speed up self.trips() calls
+        self._trips = None
+
         if feed_specifier in self._train_to_url:
             self._feed_url = self._train_to_url[feed_specifier]
         else:
@@ -137,6 +140,7 @@ class NYCTFeed:
             feed = cpp_parser_wrapper.FeedMessage(gtfs_bytes)
 
         self._feed = feed
+        self._trips = None
 
     @staticmethod
     def _trip_identifier(trip):
@@ -145,6 +149,9 @@ class NYCTFeed:
     @property
     def trips(self):
         """Get the list of subway trips from the GTFS-realtime feed. Returns a list of `Trip` objects"""
+        if self._trips:
+            return self._trips
+
         trip_updates = {}
         vehicle_updates = {}
         alerts = {}
@@ -180,6 +187,7 @@ class NYCTFeed:
             )
             trips.append(trip)
 
+        self._trips = trips
         return trips
 
     def filter_trips(self, line_id=None, travel_direction=None, train_assigned=None, underway=None, shape_id=None,
