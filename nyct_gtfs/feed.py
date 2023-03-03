@@ -135,7 +135,7 @@ class NYCTFeed:
             elif response.status_code != 200:
                 raise RuntimeError(f"Error accessing MTA data feed: {response.content}")
 
-            self.load_gtfs_bytes(response.text)
+            self.load_gtfs_bytes(response.content)
 
     def load_gtfs_bytes(self, gtfs_bytes, cpp_accelerated=False):
         """
