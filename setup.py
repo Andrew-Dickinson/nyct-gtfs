@@ -28,5 +28,5 @@ setup(
     package_data={
         "nyct_gtfs": ["gtfs_static/*.txt"]
     },
-    install_requires=["requests", "protobuf"]
+    install_requires=["requests", "protobuf", "httpx"]
 )

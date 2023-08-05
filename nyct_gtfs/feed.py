@@ -2,6 +2,7 @@ import datetime
 from urllib.parse import urlparse, unquote
 
 import requests
+import httpx
 
 from nyct_gtfs.compiled_gtfs import nyct_subway_pb2, gtfs_realtime_pb2
 from nyct_gtfs.gtfs_static_types import TripShapes, Stations
@@ -124,6 +125,17 @@ class NYCTFeed:
             raise RuntimeError(f"Error accessing MTA data feed: {response.content}")
 
         self.load_gtfs_bytes(response.content)
+
+    async def refresh_async(self):
+        """Reload this object's feed information from the MTA API async"""
+        async with httpx.AsyncClient() as client:
+            response = await client.get(self._feed_url, headers={'x-api-key':self._api_key})
+            if response.status_code == 403:
+                raise RuntimeError(f"Invalid API key: {self._api_key}")
+            elif response.status_code != 200:
+                raise RuntimeError(f"Error accessing MTA data feed: {response.content}")
+
+            self.load_gtfs_bytes(response.content)
 
     def load_gtfs_bytes(self, gtfs_bytes, cpp_accelerated=False):
         """
