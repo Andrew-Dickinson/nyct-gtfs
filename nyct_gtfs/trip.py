@@ -276,8 +276,10 @@ class Trip:
         Returns either "N" for northbound trains (and Grand Central bound shuttles) or "S" for southbound trains
         (and Times Square bound shuttles)
         """
+        if not self.shape_id:
+            return None
         parts = self.shape_id.split('.')
-        if '..' in self.trip_id:
+        if '..' in self.shape_id:
             parts = self.shape_id('..')
         return parts[1][0] if len(parts) > 1 else None
 
