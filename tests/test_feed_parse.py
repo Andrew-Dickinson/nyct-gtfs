@@ -340,5 +340,20 @@ class TestFeedFiltering(unittest.TestCase):
         )
 
 
+class TestBadTripShape(unittest.TestCase):
+    def setUp(self) -> None:
+        with open('test_data/2_train_with_0_shape.nyct.gtfsrt', 'rb') as f:
+            self.feed = NYCTFeed('1', api_key=None, fetch_immediately=False)
+            self.feed.load_gtfs_bytes(f.read())
+
+    def test_bad_trip_shape_doesnt_cause_exception(self):
+        for trip in self.feed.trips:
+            assert trip.direction in ["N", "S", None]
+
+    def test_none_as_valid_trip_shape(self):
+        assert self.feed.trips[76].shape_id == '0'
+        assert self.feed.trips[76].direction is None
+
+
 if __name__ == '__main__':
     unittest.main()
