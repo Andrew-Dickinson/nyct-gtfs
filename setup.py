@@ -10,7 +10,7 @@ README = (HERE / "README.md").read_text()
 # This call to setup() does all the work
 setup(
     name="nyct-gtfs",
-    version="1.3.0",
+    version="1.3.1",
     description="Real-time NYC subway data parsing for humans",
     long_description=README,
     long_description_content_type="text/markdown",

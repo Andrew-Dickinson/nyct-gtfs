@@ -265,7 +265,8 @@ class Trip:
 
         For example, a Southbound 1 train might have a shape ID of: "1..S03R"
         """
-        return self.trip_id.split('_')[1]
+        parts = self.trip_id.split('_')
+        return parts[1] if len(parts) > 1 else None
 
     @property
     def direction(self):
@@ -275,7 +276,12 @@ class Trip:
         Returns either "N" for northbound trains (and Grand Central bound shuttles) or "S" for southbound trains
         (and Times Square bound shuttles)
         """
-        return self.shape_id.split('..')[1][0] if '..' in self.trip_id else self.shape_id.split('.')[1][0]
+        if not self.shape_id:
+            return None
+        parts = self.shape_id.split('.')
+        if '..' in self.shape_id:
+            parts = self.shape_id('..')
+        return parts[1][0] if len(parts) > 1 else None
 
     @property
     def departure_time(self):
