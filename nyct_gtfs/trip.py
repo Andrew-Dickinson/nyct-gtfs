@@ -280,7 +280,7 @@ class Trip:
             return None
         parts = self.shape_id.split('.')
         if '..' in self.shape_id:
-            parts = self.shape_id('..')
+            parts = self.shape_id.split('..')
         return parts[1][0] if len(parts) > 1 else None
 
     @property
