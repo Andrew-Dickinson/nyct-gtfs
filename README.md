@@ -50,7 +50,7 @@ See "Usage Examples" below for more examples of the data available.
 * [MTA GTFS-realtime Data Feeds](https://api.mta.info/)
 
 ## Installation
-* Update Version 2.0.0: API keys are no longer required to access MTA GTFS feeds. [Learn more.](https://api.mta.info/#/)
+*Update Version 2.0.0: API keys are no longer required to access MTA GTFS feeds. [Learn more.](https://api.mta.info/#/)*
 1. Install nyct-gtfs
    ```sh
    pip install nyct-gtfs
