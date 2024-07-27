@@ -18,7 +18,7 @@ However, with NYCT-GTFS, you can access and query this data in just a few lines 
 >>> from nyct_gtfs import NYCTFeed
 
 # Load the realtime feed from the MTA site
->>> feed = NYCTFeed("1", api_key="YOUR_MTA_API_KEY_GOES_HERE")
+>>> feed = NYCTFeed("1")
 
 # Get all 123 trains currently underway to Times Sq-42 St
 >>> trains = feed.filter_trips(line_id=["1", "2", "3"], headed_for_stop_id=["127N", "127S"], underway=True)
@@ -50,18 +50,17 @@ See "Usage Examples" below for more examples of the data available.
 * [MTA GTFS-realtime Data Feeds](https://api.mta.info/)
 
 ## Installation
-
-1. Get a free MTA API Key at [https://api.mta.info/](https://api.mta.info/#/signup)
-2. Install nyct-gtfs
+* Update Version 2.0.0: API keys are no longer required to access MTA GTFS feeds. [Learn more.](https://api.mta.info/#/)
+1. Install nyct-gtfs
    ```sh
    pip install nyct-gtfs
    ```
-3. Load the data feed
+2. Load the data feed
     ```python
     from nyct_gtfs import NYCTFeed
     
     # Load the realtime feed from the MTA site
-    feed = NYCTFeed("1", api_key="YOUR_MTA_API_KEY_GOES_HERE")
+    feed = NYCTFeed("1")
     ```
 
 ## Usage Examples
@@ -69,7 +68,7 @@ See "Usage Examples" below for more examples of the data available.
 ### Get All Trip Data from the Feed
 ```python
 >>> from nyct_gtfs import NYCTFeed
->>> feed = NYCTFeed("B", api_key="YOUR_MTA_API_KEY_GOES_HERE")
+>>> feed = NYCTFeed("B")
 
 # Read all trip (train) information published to the BDFM feed 
 >>> trains = feed.trips
@@ -81,7 +80,7 @@ See "Usage Examples" below for more examples of the data available.
 ### Filter Only Certain Trip Data from the Feed
 ```python
 >>> from nyct_gtfs import NYCTFeed
->>> feed = NYCTFeed("B", api_key="YOUR_MTA_API_KEY_GOES_HERE")
+>>> feed = NYCTFeed("B")
 
 # Read only D train information from the BDFM feed 
 >>> trains = feed.filter_trips(line_id="D")
@@ -102,7 +101,7 @@ See `NYCTFeed.filter_trips()` for a complete listing of the filtering options av
 ### Read Trip/Train Metadata
 ```python
 >>> from nyct_gtfs import NYCTFeed
->>> feed = NYCTFeed("N", api_key="YOUR_MTA_API_KEY_GOES_HERE")
+>>> feed = NYCTFeed("N")
 
 # Read the first train from the feed
 >>> train = feed.trips[0]
@@ -142,7 +141,7 @@ departure from the station listed. Therefore our southbound N train from the pre
 in its scheduled stops list:
 ```python
 >>> from nyct_gtfs import NYCTFeed
->>> feed = NYCTFeed("N", api_key="YOUR_MTA_API_KEY_GOES_HERE")
+>>> feed = NYCTFeed("N")
 
 # Read the first train from the feed
 >>> train = feed.trips[0]
@@ -164,7 +163,7 @@ in its scheduled stops list:
 #### Read stop details
 ```python
 >>> from nyct_gtfs import NYCTFeed
->>> feed = NYCTFeed("N", api_key="YOUR_MTA_API_KEY_GOES_HERE")
+>>> feed = NYCTFeed("N")
 
 # Read the first train from the feed
 >>> train = feed.trips[0]
@@ -188,7 +187,7 @@ For full details about stop time fields see `StopTimeUpdate`
 
 ```python
 >>> from nyct_gtfs import NYCTFeed
->>> feed = NYCTFeed("A", api_key="YOUR_MTA_API_KEY_GOES_HERE")
+>>> feed = NYCTFeed("A")
 
 # Get the timestamp the GTFS feed was generated at
 >>> feed.last_generated
@@ -225,7 +224,7 @@ dict_keys(['A', 'C', 'E', 'H', 'FS'])
 ### Refresh Feed Data
 ```python
 >>> from nyct_gtfs import NYCTFeed
->>> feed = NYCTFeed("A", api_key="YOUR_MTA_API_KEY_GOES_HERE")
+>>> feed = NYCTFeed("A")
 
 # Pick a train to get details from
 >>> train = feed.trips[0]
@@ -250,11 +249,11 @@ NYCT Subway feeds are grouped by color for all of the B division (lettered) line
 are grouped into a single feed. When you initialize an `NYCTFeed` object, you can specify a line or feed URL, e.g:
 ```python
 >>> from nyct_gtfs import NYCTFeed
->>> feed1 = NYCTFeed("A", api_key="YOUR_MTA_API_KEY_GOES_HERE")
+>>> feed1 = NYCTFeed("A")
 
->>> feed2 = NYCTFeed("C", api_key="YOUR_MTA_API_KEY_GOES_HERE")
+>>> feed2 = NYCTFeed("C")
 
->>> feed3 = NYCTFeed("https://api-endpoint.mta.info/Dataservice/mtagtfsfeeds/nyct%2Fgtfs-ace", api_key="YOUR_MTA_API_KEY_GOES_HERE")
+>>> feed3 = NYCTFeed("https://api-endpoint.mta.info/Dataservice/mtagtfsfeeds/nyct%2Fgtfs-ace")
 
 >>> feed1.trip_replacement_periods.keys()
 dict_keys(['A', 'C', 'E', 'H', 'FS'])
