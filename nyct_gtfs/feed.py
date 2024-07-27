@@ -49,18 +49,16 @@ class NYCTFeed:
         "SIR": "https://api-endpoint.mta.info/Dataservice/mtagtfsfeeds/nyct%2Fgtfs-si"
     }
 
-    def __init__(self, feed_specifier, api_key, fetch_immediately=True, trips_txt=None, stops_txt=None):
+    def __init__(self, feed_specifier, fetch_immediately=True, trips_txt=None, stops_txt=None):
         """
         Creates NYCTFeed object
 
         :param feed_specifier: Either a subway line identifier (e.g. "1", "Q", etc.) or a `api.mta.info` datafeed URL
-        :param api_key: An API key obtained from https://api.mta.info/
         :param fetch_immediately: False disables auto fetch. You'll need to call refresh() before using this object
         :param trips_txt: A file or file path to a NYCT subway GTFS-static trips.txt file (to override built-in copy)
         :param stops_txt: A file or file path to a NYCT subway GTFS-static stops.txt file (to override built-in copy)
         """
         self._feed = None
-        self._api_key = api_key
         self._trip_shapes = TripShapes(trips_txt)
         self._stops = Stations(stops_txt)
 
@@ -118,10 +116,8 @@ class NYCTFeed:
 
     def refresh(self):
         """Reload this object's feed information from the MTA API"""
-        response = requests.get(self._feed_url, headers={'x-api-key': self._api_key})
-        if response.status_code == 403:
-            raise RuntimeError(f"Invalid API key: {self._api_key}")
-        elif response.status_code != 200:
+        response = requests.get(self._feed_url)
+        if response.status_code != 200:
             raise RuntimeError(f"Error accessing MTA data feed: {response.content}")
 
         self.load_gtfs_bytes(response.content)
@@ -129,10 +125,8 @@ class NYCTFeed:
     async def refresh_async(self):
         """Reload this object's feed information from the MTA API async"""
         async with httpx.AsyncClient() as client:
-            response = await client.get(self._feed_url, headers={'x-api-key':self._api_key})
-            if response.status_code == 403:
-                raise RuntimeError(f"Invalid API key: {self._api_key}")
-            elif response.status_code != 200:
+            response = await client.get(self._feed_url)
+            if response.status_code != 200:
                 raise RuntimeError(f"Error accessing MTA data feed: {response.content}")
 
             self.load_gtfs_bytes(response.content)
@@ -195,7 +189,7 @@ class NYCTFeed:
         return trips
 
     def filter_trips(self, line_id=None, travel_direction=None, train_assigned=None, underway=None, shape_id=None,
-                  headed_for_stop_id=None, updated_after=None, has_delay_alert=None):
+                     headed_for_stop_id=None, updated_after=None, has_delay_alert=None):
         """
         Get the list of subway trips from the GTFS-realtime feed, optionally filtering based on one or more parameters.
 

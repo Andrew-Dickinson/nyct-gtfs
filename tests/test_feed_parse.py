@@ -8,7 +8,7 @@ from nyct_gtfs.compiled_gtfs import gtfs_realtime_pb2, nyct_subway_pb2
 class TestFeedParseADivision(unittest.TestCase):
     def setUp(self) -> None:
         with open('test_data/a_division.nyct.gtfsrt', 'rb') as f:
-            self.feed = NYCTFeed('1', api_key=None, fetch_immediately=False)
+            self.feed = NYCTFeed('1', fetch_immediately=False)
             self.feed.load_gtfs_bytes(f.read())
 
     def test_feed_header(self):
@@ -227,7 +227,7 @@ class TestParseCustomStaticFiles(unittest.TestCase):
         with open('test_data/a_division.nyct.gtfsrt', 'rb') as f:
             with open('../nyct_gtfs/gtfs_static/stops.txt', 'r') as stops:
                 with open('../nyct_gtfs/gtfs_static/trips.txt', 'r') as trips:
-                    self.feed = NYCTFeed('1', api_key=None, fetch_immediately=False, stops_txt=stops, trips_txt=trips)
+                    self.feed = NYCTFeed('1', fetch_immediately=False, stops_txt=stops, trips_txt=trips)
                     self.feed.load_gtfs_bytes(f.read())
 
     def test_read_from_trips(self):
@@ -241,14 +241,14 @@ class TestParseCustomStaticFiles(unittest.TestCase):
 
 class TestFeedConstructor(unittest.TestCase):
     def test_feed_constructor_bogus_feed(self):
-        self.assertRaises(ValueError, NYCTFeed, "alskfjdk", api_key=None, fetch_immediately=False)
+        self.assertRaises(ValueError, NYCTFeed, "alskfjdk", fetch_immediately=False)
 
     def test_feed_constructor_ace(self):
-        ace_feed = NYCTFeed("A", api_key=None, fetch_immediately=False)
+        ace_feed = NYCTFeed("A", fetch_immediately=False)
         self.assertEqual("https://api-endpoint.mta.info/Dataservice/mtagtfsfeeds/nyct%2Fgtfs-ace", ace_feed._feed_url)
 
     def test_feed_constructor_ace_link(self):
-        ace_feed = NYCTFeed("https://api-endpoint.mta.info/Dataservice/mtagtfsfeeds/nyct%2Fgtfs-ace", api_key=None,
+        ace_feed = NYCTFeed("https://api-endpoint.mta.info/Dataservice/mtagtfsfeeds/nyct%2Fgtfs-ace",
                             fetch_immediately=False)
         self.assertEqual("https://api-endpoint.mta.info/Dataservice/mtagtfsfeeds/nyct%2Fgtfs-ace", ace_feed._feed_url)
 
@@ -256,7 +256,7 @@ class TestFeedConstructor(unittest.TestCase):
 class TestFeedParseBDivision(unittest.TestCase):
     def setUp(self) -> None:
         with open('test_data/b_division.nyct.gtfsrt', 'rb') as f:
-            self.feed = NYCTFeed('1', api_key=None, fetch_immediately=False)
+            self.feed = NYCTFeed('1', fetch_immediately=False)
             self.feed.load_gtfs_bytes(f.read())
 
     def test_fake_underway(self):
@@ -276,7 +276,7 @@ class TestFeedParseBDivision(unittest.TestCase):
 class TestFeedParseDelayAlerts(unittest.TestCase):
     def setUp(self) -> None:
         with open('test_data/2_delay.nyct.gtfsrt', 'rb') as f:
-            self.feed = NYCTFeed('2', api_key=None, fetch_immediately=False)
+            self.feed = NYCTFeed('2', fetch_immediately=False)
             self.feed.load_gtfs_bytes(f.read())
 
     def test_feed_filtering(self):
@@ -294,7 +294,7 @@ class TestFeedParseDelayAlerts(unittest.TestCase):
 class TestFeedFiltering(unittest.TestCase):
     def setUp(self) -> None:
         with open('test_data/a_division.nyct.gtfsrt', 'rb') as f:
-            self.feed = NYCTFeed('1', api_key=None, fetch_immediately=False)
+            self.feed = NYCTFeed('1', fetch_immediately=False)
             self.feed.load_gtfs_bytes(f.read())
 
     def test_feed_filtering(self):
@@ -343,7 +343,7 @@ class TestFeedFiltering(unittest.TestCase):
 class TestBadTripShape(unittest.TestCase):
     def setUp(self) -> None:
         with open('test_data/2_train_with_0_shape.nyct.gtfsrt', 'rb') as f:
-            self.feed = NYCTFeed('1', api_key=None, fetch_immediately=False)
+            self.feed = NYCTFeed('1', fetch_immediately=False)
             self.feed.load_gtfs_bytes(f.read())
 
     def test_bad_trip_shape_doesnt_cause_exception(self):
