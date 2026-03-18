@@ -48,18 +48,19 @@ class NYCTFeed:
         "SIR": "https://api-endpoint.mta.info/Dataservice/mtagtfsfeeds/nyct%2Fgtfs-si"
     }
 
-    def __init__(self, feed_specifier, fetch_immediately=True, trips_txt=None, stops_txt=None):
-        """
-        Creates NYCTFeed object
+    def __init__(self, feed_specifier, fetch_immediately=True, trips_txt=None, stops_txt=None, timeout=None):
+        """Creates NYCTFeed object
 
         :param feed_specifier: Either a subway line identifier (e.g. "1", "Q", etc.) or a `api.mta.info` datafeed URL
         :param fetch_immediately: False disables auto fetch. You'll need to call refresh() before using this object
         :param trips_txt: A file or file path to a NYCT subway GTFS-static trips.txt file (to override built-in copy)
         :param stops_txt: A file or file path to a NYCT subway GTFS-static stops.txt file (to override built-in copy)
+        :param timeout: A request timeout (in seconds) to use when fetching the feed. Passed through to requests/httpx.
         """
         self._feed = None
         self._trip_shapes = TripShapes(trips_txt)
         self._stops = Stations(stops_txt)
+        self._timeout = timeout
 
         if feed_specifier in self._train_to_url:
             self._feed_url = self._train_to_url[feed_specifier]
@@ -109,24 +110,35 @@ class NYCTFeed:
         periods = {}
         raw_periods = self._feed.header.Extensions[nyct_subway_pb2.nyct_feed_header].trip_replacement_period
         for trip_replacement_period in raw_periods:
-            end_time = datetime.datetime.fromtimestamp(trip_replacement_period.replacement_period.end)
+            end_time = datetime.datetime.fromtimestamp(
+                trip_replacement_period.replacement_period.end)
             periods[trip_replacement_period.route_id] = end_time
         return periods
 
     def refresh(self):
         """Reload this object's feed information from the MTA API"""
-        response = requests.get(self._feed_url)
+        request_kwargs = {}
+        if self._timeout is not None:
+            request_kwargs["timeout"] = self._timeout
+
+        response = requests.get(self._feed_url, **request_kwargs)
         if response.status_code != 200:
-            raise RuntimeError(f"Error accessing MTA data feed: {response.content}")
+            raise RuntimeError(
+                f"Error accessing MTA data feed: {response.content}")
 
         self.load_gtfs_bytes(response.content)
 
     async def refresh_async(self):
         """Reload this object's feed information from the MTA API async"""
+        request_kwargs = {}
+        if self._timeout is not None:
+            request_kwargs["timeout"] = self._timeout
+
         async with httpx.AsyncClient() as client:
-            response = await client.get(self._feed_url)
+            response = await client.get(self._feed_url, **request_kwargs)
             if response.status_code != 200:
-                raise RuntimeError(f"Error accessing MTA data feed: {response.content}")
+                raise RuntimeError(
+                    f"Error accessing MTA data feed: {response.content}")
 
             self.load_gtfs_bytes(response.content)
 
@@ -155,9 +167,11 @@ class NYCTFeed:
         alerts = {}
         for entity in self._feed.entity:
             if entity.HasField('trip_update'):
-                trip_updates[self._trip_identifier(entity.trip_update.trip)] = entity.trip_update
+                trip_updates[self._trip_identifier(
+                    entity.trip_update.trip)] = entity.trip_update
             elif entity.HasField('vehicle'):
-                vehicle_updates[self._trip_identifier(entity.vehicle.trip)] = entity.vehicle
+                vehicle_updates[self._trip_identifier(
+                    entity.vehicle.trip)] = entity.vehicle
             elif entity.HasField('alert'):
                 for informed_entity in entity.alert.informed_entity:
                     train_id = informed_entity.trip.Extensions[nyct_subway_pb2.nyct_trip_descriptor].train_id
@@ -217,7 +231,8 @@ class NYCTFeed:
                     if trip.route_id not in line_id:
                         continue
                 else:
-                    raise TypeError(f"Valid value for line_id: {line_id}. Must be str or list")
+                    raise TypeError(
+                        f"Valid value for line_id: {line_id}. Must be str or list")
 
             if travel_direction is not None:
                 if trip.direction != travel_direction:
@@ -239,19 +254,22 @@ class NYCTFeed:
                     if trip.shape_id not in shape_id:
                         continue
                 else:
-                    raise TypeError(f"Valid value for shape_id: {shape_id}. Must be str or list")
+                    raise TypeError(
+                        f"Valid value for shape_id: {shape_id}. Must be str or list")
 
             if headed_for_stop_id is not None:
                 if isinstance(headed_for_stop_id, str):
                     if not trip.headed_to_stop(headed_for_stop_id):
                         continue
                 elif isinstance(headed_for_stop_id, list):
-                    headed_for_stops = [trip.headed_to_stop(stop_id) for stop_id in headed_for_stop_id]
+                    headed_for_stops = [trip.headed_to_stop(
+                        stop_id) for stop_id in headed_for_stop_id]
                     if sum(headed_for_stops) == 0:
                         # This means that none of the stops requested by the caller are in this train's future path
                         continue
                 else:
-                    raise TypeError(f"Valid value for headed_for_stop_id: {headed_for_stop_id}. Must be str or list")
+                    raise TypeError(
+                        f"Valid value for headed_for_stop_id: {headed_for_stop_id}. Must be str or list")
 
             if updated_after is not None:
                 if not trip.underway:
@@ -274,4 +292,4 @@ class NYCTFeed:
         path = unquote(urlparse(self._feed_url).path)
         feed_id = path.split('/')[-1]
         return f"NYCT Subway Feed ({feed_id}), generated {self.last_generated.strftime('%Y-%m-%d %H:%M:%S')}, " \
-               f"containing {len(self.trips)} trips"
+            f"containing {len(self.trips)} trips"
